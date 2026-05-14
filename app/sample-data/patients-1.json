@@ -1,0 +1,20 @@
+[
+  {
+    "patientId": "P-1001",
+    "spo2": 96,
+    "temperature": "36.4",
+    "heartRate": 72,
+    "dateTimeTaken": "",
+    "weights": [],
+    "userId": null
+  },
+  {
+    "patientId": "P-1002",
+    "spo2": 97,
+    "temperature": "37.0",
+    "heartRate": 65,
+    "dateTimeTaken": "",
+    "weights": [55.3, 55.6, 53],
+    "userId": null
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "patientId": "P-1001",
+    "spo2": 96,
+    "temperature": "36.4",
+    "heartRate": 72,
+    "dateTimeTaken": "",
+    "weights": [],
+    "userId": null
+  },
+  {
+    "patientId": "P-1002",
+    "spo2": 97,
+    "temperature": "37.0",
+    "heartRate": 65,
+    "dateTimeTaken": "2026-05-14T08:15:00",
+    "weights": [55.3, 55.6, 53.0],
+    "userId": null
+  },
+  {
+    "patientId": "P-1003",
+    "spo2": 88,
+    "temperature": "38.7",
+    "heartRate": 110,
+    "dateTimeTaken": "2026-05-13T22:11:00",
+    "weights": [81.2],
+    "userId": "nurse-14"
+  },
+  {
+    "patientId": "P-1004",
+    "spo2": 102,
+    "temperature": "36.8",
+    "heartRate": 70,
+    "dateTimeTaken": "2026-05-14T01:40:00",
+    "weights": [],
+    "userId": "system-import"
+  },
+  {
+    "patientId": "P-1005",
+    "spo2": null,
+    "temperature": "35.2",
+    "heartRate": 58,
+    "dateTimeTaken": "",
+    "weights": [91.0, 90.8],
+    "userId": null
+  },
+  {
+    "patientId": "P-1006",
+    "spo2": 93,
+    "temperature": "invalid",
+    "heartRate": 74,
+    "dateTimeTaken": "2026-05-12T18:05:00",
+    "weights": [],
+    "userId": "nurse-02"
+  },
+  {
+    "patientId": "P-1007",
+    "spo2": 75,
+    "temperature": "40.1",
+    "heartRate": 132,
+    "dateTimeTaken": "2026-05-14T03:55:00",
+    "weights": [67.4],
+    "userId": "icu-terminal"
+  }
+]
