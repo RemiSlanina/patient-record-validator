@@ -6,6 +6,7 @@ package org.example;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.PatientRecord;
+import org.example.validation.*;
 
 import java.util.List;
 import java.io.File;; 
@@ -21,12 +22,22 @@ public class App {
 
         ObjectMapper mapper = new ObjectMapper(); 
 
-        List<PatientRecord> records = mapper.readValue(new File("sample-data/patients-1.json"), new TypeReference<List<PatientRecord>>() {});
+        List<PatientRecord> records = mapper.readValue(new File("sample-data/patients-1.json"), new TypeReference<List<PatientRecord>>() {}); 
+
+        RecordValidator validator = new RecordValidator(); 
+
 
         System.out.println("Records loaded " + records.size());
 
         for (PatientRecord record : records) {
+            System.out.println();
             System.out.println(record);
+            List<ValidationIssue> issues = validator.validate(record); 
+            System.out.println("issues found: ");
+            for (ValidationIssue issue : issues) {
+                System.out.println(issue);
+            }
+            System.out.println();
         }
     }
 }
