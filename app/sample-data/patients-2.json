@@ -46,7 +46,7 @@
   },
   {
     "patientId": "P-1006",
-    "spo2": 93,
+    "spo2": "error",
     "temperature": "invalid",
     "heartRate": 74,
     "dateTimeTaken": "2026-05-12T18:05:00",

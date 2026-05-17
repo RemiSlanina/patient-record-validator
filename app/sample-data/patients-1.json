@@ -4,26 +4,26 @@
     "spo2": 96,
     "temperature": "36.4",
     "heartRate": 72,
-    "dateTimeTaken": "",
+    "dateTimeTaken": "2026-05-14T03:55:00",
     "weights": [],
-    "userId": null
+    "userId": "B-Abrahamovic"
   },
   {
     "patientId": "P-1002",
     "spo2": 97,
     "temperature": "37.0",
     "heartRate": 65,
-    "dateTimeTaken": "",
+    "dateTimeTaken": "2026-07-30T08:15:00",
     "weights": [55.3, 55.6, 53],
-    "userId": null
+    "userId": "nurse"
   },
   {
     "patientId": "P-1003A",
-    "spo2": 97,
-    "temperature": "37.0",
-    "heartRate": 65,
-    "dateTimeTaken": "",
-    "weights": [55.3, 55.6, 53],
+    "spo2": 3,
+    "temperature": "21.0",
+    "heartRate": null,
+    "dateTimeTaken": "Tuesday",
+    "weights": [-1, 1000, 55.6, 53],
     "userId": null
   }
 ]
