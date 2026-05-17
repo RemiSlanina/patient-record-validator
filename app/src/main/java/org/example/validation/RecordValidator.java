@@ -1,196 +1,196 @@
 package org.example.validation;
-import org.example.model.PatientRecord;
 
+import org.example.model.PatientRecord;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class RecordValidator {
     public List<ValidationIssue> validate(PatientRecord record) {
-        List<ValidationIssue> issues = new ArrayList<>(); 
-        // test patientId
-        ValidationIssue patientIdIssue = validatePatientId(record.patientId);
+        List<ValidationIssue> issues = new ArrayList<>();
+        // Validate all fields
+        ValidationIssue patientIdIssue = validatePatientId(record.patientId, record.patientId);
         if (patientIdIssue != null) issues.add(patientIdIssue);
-        ValidationIssue spo2Issue = validateSpo2(record.spo2, record.patientId); 
+
+        ValidationIssue spo2Issue = validateSpo2(record.spo2, record.patientId);
         if (spo2Issue != null) issues.add(spo2Issue);
-        ValidationIssue temperatureIssue = validateTemperature(record.temperature, record.patientId); 
-        if (temperatureIssue != null) issues.add(temperatureIssue); 
-        ValidationIssue heartRateIssue = validateHeartRate(record.heartRate, record.patientId); 
-        if (heartRateIssue != null) issues.add(heartRateIssue); 
-        ValidationIssue weightsIssue = validateWeights(record.weights, record.patientId); 
-        if (weightsIssue != null) issues.add(weightsIssue); 
-        ValidationIssue dateTimeTakenIssue = validateDateTimeTaken(record.dateTimeTaken, record.patientId); 
-        if (dateTimeTakenIssue != null) issues.add(dateTimeTakenIssue); 
-        ValidationIssue UserIdIssue = validateUserId(record.userId, record.patientId); 
-        if (UserIdIssue != null) issues.add(UserIdIssue); 
-        // TODO test the whole record later 
-        return issues; 
+
+        ValidationIssue temperatureIssue = validateTemperature(record.temperature, record.patientId);
+        if (temperatureIssue != null) issues.add(temperatureIssue);
+
+        ValidationIssue heartRateIssue = validateHeartRate(record.heartRate, record.patientId);
+        if (heartRateIssue != null) issues.add(heartRateIssue);
+
+        ValidationIssue weightsIssue = validateWeights(record.weights, record.patientId);
+        if (weightsIssue != null) issues.add(weightsIssue);
+
+        ValidationIssue dateTimeTakenIssue = validateDateTimeTaken(record.dateTimeTaken, record.patientId);
+        if (dateTimeTakenIssue != null) issues.add(dateTimeTakenIssue);
+
+        ValidationIssue userIdIssue = validateUserId(record.userId, record.patientId);
+        if (userIdIssue != null) issues.add(userIdIssue);
+
+        return issues;
     }
 
-
-
-    private ValidationIssue validatePatientId(String patientId){
+    private ValidationIssue validatePatientId(String patientId, String recordPatientId) {
         if (patientId == null || patientId.isBlank()) {
-            // TODO define a constructor for ValidationIssue
-            ValidationIssue issue =  new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "patientId";
-            issue.message = "Missing patient ID";
-            issue.severity = ValidationIssue.Severity.INFO;
-            return issue; 
+            return new ValidationIssue(
+                recordPatientId,
+                "patientId",
+                "Missing patient ID",
+                ValidationIssue.Severity.ERROR
+            );
         }
         if (!patientId.matches("^P-\\d+$")) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "patientId"; 
-            issue.message = "Invalid patient ID format"; 
-            issue.severity = ValidationIssue.Severity.INFO; 
-            return issue; 
+            return new ValidationIssue(
+                recordPatientId,
+                "patientId",
+                "Invalid patient ID format",
+                ValidationIssue.Severity.WARNING
+            );
         }
-        // no issues: 
-        return null; 
+        return null;
     }
 
-    private ValidationIssue validateSpo2(Integer spo2, String patientId){
-        // the normal range is 95% to 100% 
-        // spo2 values like "dead" currently crash the deserializer. custom Jackson later?  
+    private ValidationIssue validateSpo2(Integer spo2, String patientId) {
         if (spo2 == null) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "spo2";
-            issue.message = "Missing SpO₂ value";
-            issue.severity = ValidationIssue.Severity.ERROR;
-            return issue;
+            return new ValidationIssue(
+                patientId,
+                "spo2",
+                "Missing SpO₂ value",
+                ValidationIssue.Severity.ERROR
+            );
         }
         if (spo2 < 95 || spo2 > 100) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "spo2";
-            issue.message = "SpO₂ out of range (95-100%)";
-            issue.severity = ValidationIssue.Severity.WARNING;
-            return issue;
+            return new ValidationIssue(
+                patientId,
+                "spo2",
+                "SpO₂ out of range (95-100%)",
+                ValidationIssue.Severity.WARNING
+            );
         }
-        return null; 
+        return null;
     }
-    private ValidationIssue validateTemperature(Double temperature, String patientId){
-        // should be 35 - 38°C 
+
+    private ValidationIssue validateTemperature(Double temperature, String patientId) {
         if (temperature == null) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "temperature";
-            issue.message = "Missing temperature value";
-            issue.severity = ValidationIssue.Severity.ERROR;
-            return issue;
+            return new ValidationIssue(
+                patientId,
+                "temperature",
+                "Missing temperature value",
+                ValidationIssue.Severity.ERROR
+            );
         }
-        if (temperature < 35|| temperature > 42) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "temperature";
-            issue.message = "Temperature out of range (35-42°C)";
-            issue.severity = ValidationIssue.Severity.WARNING;
-            return issue;
+        if (temperature < 35 || temperature > 42) {
+            return new ValidationIssue(
+                patientId,
+                "temperature",
+                "Temperature out of range (35-42°C)",
+                ValidationIssue.Severity.WARNING
+            );
         }
-        // no issues found, return null: 
-        return null; 
+        return null;
     }
 
-    private ValidationIssue validateHeartRate(Integer heartRate, String patientId){
-        if (heartRate == null){
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "heartRate";
-            issue.message = "Missing heart rate";
-            issue.severity = ValidationIssue.Severity.ERROR;
-            return issue;
+    private ValidationIssue validateHeartRate(Integer heartRate, String patientId) {
+        if (heartRate == null) {
+            return new ValidationIssue(
+                patientId,
+                "heartRate",
+                "Missing heart rate",
+                ValidationIssue.Severity.ERROR
+            );
         }
-        if (heartRate < 40 || heartRate > 180){
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "heartRate";
-            issue.message = "Heart rate out of range (40 - 180 bpm)";
-            issue.severity = ValidationIssue.Severity.WARNING;
-            return issue;
+        if (heartRate < 40 || heartRate > 180) {
+            return new ValidationIssue(
+                patientId,
+                "heartRate",
+                "Heart rate out of range (40-180 bpm)",
+                ValidationIssue.Severity.WARNING
+            );
         }
-        return null; 
+        return null;
     }
-    private ValidationIssue validateWeights(List<Double> weights, String patientId){
+
+    private ValidationIssue validateWeights(List<Double> weights, String patientId) {
         if (weights == null) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "weights";
-            issue.message = "Missing weight value";
-            issue.severity = ValidationIssue.Severity.ERROR;
-            return issue;
+            return new ValidationIssue(
+                patientId,
+                "weights",
+                "Missing weight values",
+                ValidationIssue.Severity.ERROR
+            );
         }
-        int wIssues = 0; 
-        for (Double weight : weights) {
-            if (weight == null){
-                wIssues++; 
-            }
-            if (weight < 0 || weight > 600){
-                wIssues++; 
-            }
-        }
-        if (wIssues > 0){
-                ValidationIssue issue = new ValidationIssue(); 
-                issue.patientId = patientId; 
-                issue.field = "weights";
-                issue.message = "Invalid weight(s): " + wIssues + " issue(s) found.";
-                issue.severity = ValidationIssue.Severity.ERROR;
-                return issue;
-        } 
-        return null; 
-    }
-    private ValidationIssue validateDateTimeTaken(String dateTimeTaken, String patientId){
-        if (dateTimeTaken == null || dateTimeTaken.isBlank()){
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "dateTimeTaken";
-            issue.message = "Missing dateTimeTaken";
-            issue.severity = ValidationIssue.Severity.ERROR;
-            return issue;
-        } 
-        try {
-            // parse ISO_LOCAL_DATE_TIME
-            LocalDateTime localDate = LocalDateTime.parse(dateTimeTaken); 
 
-            if (localDate.isAfter(LocalDateTime.now())) {
-                ValidationIssue issue = new ValidationIssue(); 
-                issue.patientId = patientId; 
-                issue.field = "dateTimeTaken";
-                issue.message = "Date cannot be in the future: " + localDate.toString();
-                issue.severity = ValidationIssue.Severity.ERROR;
-                return issue; 
+        int invalidWeights = 0;
+        for (Double weight : weights) {
+            if (weight == null || weight < 0 || weight > 600) {
+                invalidWeights++;
             }
-            if (localDate.isBefore(LocalDateTime.parse("1990-01-01T00:00:00"))){
-                ValidationIssue issue = new ValidationIssue(); 
-                issue.patientId = patientId; 
-                issue.field = "dateTimeTaken";
-                issue.message = "Very old dateTimeTaken: " + localDate.toString();
-                issue.severity = ValidationIssue.Severity.WARNING;
-                return issue; 
+        }
+
+        if (invalidWeights > 0) {
+            return new ValidationIssue(
+                patientId,
+                "weights",
+                "Invalid weight(s): " + invalidWeights + " issue(s) found",
+                ValidationIssue.Severity.ERROR
+            );
+        }
+        return null;
+    }
+
+    private ValidationIssue validateDateTimeTaken(String dateTimeTaken, String patientId) {
+        if (dateTimeTaken == null || dateTimeTaken.isBlank()) {
+            return new ValidationIssue(
+                patientId,
+                "dateTimeTaken",
+                "Missing dateTimeTaken",
+                ValidationIssue.Severity.ERROR
+            );
+        }
+
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeTaken);
+
+            if (dateTime.isAfter(LocalDateTime.now())) {
+                return new ValidationIssue(
+                    patientId,
+                    "dateTimeTaken",
+                    "Date cannot be in the future: " + dateTime,
+                    ValidationIssue.Severity.ERROR
+                );
+            }
+
+            if (dateTime.isBefore(LocalDateTime.parse("1990-01-01T00:00:00"))) {
+                return new ValidationIssue(
+                    patientId,
+                    "dateTimeTaken",
+                    "Very old dateTimeTaken: " + dateTime,
+                    ValidationIssue.Severity.WARNING
+                );
             }
         } catch (Exception e) {
-            ValidationIssue issue = new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "dateTimeTaken";
-            issue.message = "Invalid dateTimeTaken format. Expected yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss";
-            issue.severity = ValidationIssue.Severity.ERROR;
-            return issue; 
+            return new ValidationIssue(
+                patientId,
+                "dateTimeTaken",
+                "Invalid dateTimeTaken format. Expected yyyy-MM-ddTHH:mm:ss",
+                ValidationIssue.Severity.ERROR
+            );
         }
-        return null; 
+        return null;
     }
-    private ValidationIssue validateUserId(String userId, String patientId){
+
+    private ValidationIssue validateUserId(String userId, String patientId) {
         if (userId == null || userId.isBlank()) {
-            ValidationIssue issue =  new ValidationIssue(); 
-            issue.patientId = patientId; 
-            issue.field = "userId";
-            issue.message = "Missing userId/source identifier";
-            issue.severity = ValidationIssue.Severity.INFO;
-            return issue; 
+            return new ValidationIssue(
+                patientId,
+                "userId",
+                "Missing userId/source identifier",
+                ValidationIssue.Severity.INFO
+            );
         }
         return null;
     }
 }
-

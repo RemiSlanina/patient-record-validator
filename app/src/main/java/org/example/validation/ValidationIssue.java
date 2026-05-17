@@ -10,6 +10,13 @@ public class ValidationIssue {
         WARNING, // f.e. missing timestamp ?  
         ERROR   // f.e. malformed temperature ?
     }
+    public ValidationIssue(String patientId, String field, 
+                String message, Severity severity){
+        this.patientId = patientId; 
+        this.field = field; 
+        this.message = message; 
+        this.severity = severity; 
+    }
 
     @Override 
     public String toString() {
