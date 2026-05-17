@@ -6,31 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecordValidator {
+
     public List<ValidationIssue> validate(PatientRecord record) {
         List<ValidationIssue> issues = new ArrayList<>();
         // Validate all fields
-        ValidationIssue patientIdIssue = validatePatientId(record.patientId, record.patientId);
-        if (patientIdIssue != null) issues.add(patientIdIssue);
-
-        ValidationIssue spo2Issue = validateSpo2(record.spo2, record.patientId);
-        if (spo2Issue != null) issues.add(spo2Issue);
-
-        ValidationIssue temperatureIssue = validateTemperature(record.temperature, record.patientId);
-        if (temperatureIssue != null) issues.add(temperatureIssue);
-
-        ValidationIssue heartRateIssue = validateHeartRate(record.heartRate, record.patientId);
-        if (heartRateIssue != null) issues.add(heartRateIssue);
-
-        ValidationIssue weightsIssue = validateWeights(record.weights, record.patientId);
-        if (weightsIssue != null) issues.add(weightsIssue);
-
-        ValidationIssue dateTimeTakenIssue = validateDateTimeTaken(record.dateTimeTaken, record.patientId);
-        if (dateTimeTakenIssue != null) issues.add(dateTimeTakenIssue);
-
-        ValidationIssue userIdIssue = validateUserId(record.userId, record.patientId);
-        if (userIdIssue != null) issues.add(userIdIssue);
-
+        addIssueIfPrsent(issues, validatePatientId(record.patientId, record.patientId)); 
+        addIssueIfPrsent(issues, validateSpo2(record.spo2, record.patientId)); 
+        addIssueIfPrsent(issues, validateTemperature(record.temperature, record.patientId));
+        addIssueIfPrsent(issues, validateHeartRate(record.heartRate, record.patientId));
+        addIssueIfPrsent(issues, validateWeights(record.weights, record.patientId));
+        addIssueIfPrsent(issues, validateDateTimeTaken(record.dateTimeTaken, record.patientId));
+        addIssueIfPrsent(issues, validateUserId(record.userId, record.patientId));
         return issues;
+    }
+
+    // Helper functions
+    private void addIssueIfPrsent(List<ValidationIssue> issues, ValidationIssue issue){
+        if (issue != null) {
+            issues.add(issue); 
+        }
     }
 
     private ValidationIssue validatePatientId(String patientId, String recordPatientId) {
