@@ -3,13 +3,15 @@
  */
 package org.example;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.model.PatientRecord;
-import org.example.validation.*;
-
+import java.io.File;
 import java.util.List;
-import java.io.File;; 
+
+import org.example.model.PatientRecord;
+import org.example.validation.RecordValidator;
+import org.example.validation.ValidationIssue;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;; 
 
 
 public class App {
@@ -33,9 +35,11 @@ public class App {
             System.out.println();
             System.out.println(record);
             List<ValidationIssue> issues = validator.validate(record); 
-            System.out.println("issues found: ");
-            for (ValidationIssue issue : issues) {
-                System.out.println(issue);
+            if (!issues.isEmpty()) {
+                System.out.println("issues found: ");
+                for (ValidationIssue issue : issues) {
+                    System.out.println(issue);
+                }
             }
             System.out.println();
         }

@@ -10,4 +10,12 @@ public class ValidationIssue {
         WARNING, // f.e. missing timestamp ?  
         ERROR   // f.e. malformed temperature ?
     }
+
+    @Override 
+    public String toString() {
+        return "patientId: " + patientId + 
+        ", field: " + field +  
+        ", message: " + message + 
+        ", severity: " + severity + "."; 
+    }
 }
