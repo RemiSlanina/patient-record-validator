@@ -5,9 +5,9 @@ Small Java CLI prototype for validating and cleaning patient vital record JSON d
 ## Features
 
 - Parse patient records from JSON
-- Validate malformed values
+- Validate malformed or suspicious values
 - Normalize fields
-- Generate validation summary
+- Generate validation summaries
 - Export cleaned JSON
 
 ## Tech
@@ -15,16 +15,22 @@ Small Java CLI prototype for validating and cleaning patient vital record JSON d
 - Java
 - Gradle
 - Jackson
-- JUnit
+- JUnit 5
 
-## Feats
+## Current Functionality
 
-- Validate reports and log issues
-- Clean reports (invalid weights are dropped currently)
-- Print issues and cleaned reports (cli version only)
+- Validate patient records and log issues
+- Normalize selected malformed fields
+- Remove invalid weights during cleaning
+- Print validation issues and cleaned records in the CLI
 
-Cleaner: normalization (trim, format, canonical shape)
-Validator: business/range rules (acceptable Spo2, heart rate range, etc.)
+_Validator_:
+business/range rules
+(example: SpO₂ range, missing heart rate, invalid timestamps)
+
+_Cleaner_:
+normalization and safe transformations
+(example: trimming strings, rounding values, removing invalid weights)
 
 ## Run
 
@@ -32,14 +38,21 @@ Validator: business/range rules (acceptable Spo2, heart rate range, etc.)
 ./gradlew run
 ```
 
+## Tests
+
+```bash
+./gradlew test
+```
+
 ## Scope
 
 Small internal-tooling style prototype.
 
-No:
+Intentionally excludes:
 
 - Spring
 - databases
-- APIs
+- REST APIs
 - Docker
 - frontend
+- microservices
