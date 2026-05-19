@@ -20,7 +20,7 @@
   {
     "patientId": "   P-1003A    ",
     "spo2": 3,
-    "temperature": "21.0",
+    "temperature": "21.332",
     "heartRate": null,
     "dateTimeTaken": "Tuesday",
     "weights": [-1, 1000, 55.6, 53],

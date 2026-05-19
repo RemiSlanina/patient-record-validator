@@ -31,14 +31,15 @@ public class App {
         RecordValidator validator = new RecordValidator(); 
 
         //test the cleaner 
-        System.out.println("Cursed patientId " + records.get(2).patientId);
-        System.out.println("Cleaned patientId " + cleaner.clean(records.get(2)).patientId);
+        // System.out.println("Cursed patientId " + records.get(2).patientId);
+        // System.out.println("Cleaned patientId " + cleaner.clean(records.get(2)).patientId);
 
         System.out.println("Records loaded " + records.size());
 
         for (PatientRecord record : records) {
             System.out.println();
             System.out.println(record);
+            System.out.println("Record for " +  record.patientId);
             List<ValidationIssue> issues = validator.validate(record); 
             if (!issues.isEmpty()) {
                 System.out.println("issues found: ");
@@ -46,6 +47,9 @@ public class App {
                     System.out.println(issue);
                 }
             }
+            PatientRecord cleanedRecord = cleaner.clean(record); 
+            System.out.println("Initial: " + record.toString());
+            System.out.println("Cleaned: " + cleanedRecord.toString());
             System.out.println();
         }
     }
