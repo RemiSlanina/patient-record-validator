@@ -6,6 +6,7 @@ package org.example;
 import java.io.File;
 import java.util.List;
 
+import org.example.cleaning.RecordCleaner;
 import org.example.model.PatientRecord;
 import org.example.validation.RecordValidator;
 import org.example.validation.ValidationIssue;
@@ -26,8 +27,12 @@ public class App {
 
         List<PatientRecord> records = mapper.readValue(new File("sample-data/patients-1.json"), new TypeReference<List<PatientRecord>>() {}); 
 
+        RecordCleaner cleaner = new RecordCleaner(); 
         RecordValidator validator = new RecordValidator(); 
 
+        //test the cleaner 
+        System.out.println("Cursed patientId " + records.get(2).patientId);
+        System.out.println("Cleaned patientId " + cleaner.clean(records.get(2)).patientId);
 
         System.out.println("Records loaded " + records.size());
 

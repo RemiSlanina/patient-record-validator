@@ -18,12 +18,12 @@
     "userId": "nurse"
   },
   {
-    "patientId": "P-1003A",
+    "patientId": "   P-1003A    ",
     "spo2": 3,
     "temperature": "21.0",
     "heartRate": null,
     "dateTimeTaken": "Tuesday",
     "weights": [-1, 1000, 55.6, 53],
-    "userId": null
+    "userId": "empty"
   }
 ]
