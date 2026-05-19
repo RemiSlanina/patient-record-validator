@@ -33,7 +33,6 @@ normalization and safe transformations
 (example: trimming strings, rounding values, removing invalid weights)
 Rounding values is technically interpretive, but not a clear semantic rewrite.
 36.8888 -> 36.9 is performed as abounded precision normalization.
-.
 
 ## Run
 
