@@ -49,7 +49,7 @@ public class RecordCleanerTest {
         assertEquals(36.9, cleaned.temperature);
     }
 
-        @Test
+    @Test
     void clean_shouldDropInvalidWeights(){
         // arrange 
         PatientRecord raw = new PatientRecord(
@@ -67,6 +67,7 @@ public class RecordCleanerTest {
         assertEquals(List.of(82.0, 83.9), cleaned.weights);
     }
 
+    @Test
     void clean_roundTemperatureUpToSingleDecimal(){
         PatientRecord raw = new PatientRecord(); 
         raw.temperature = 36.45; 
@@ -75,4 +76,35 @@ public class RecordCleanerTest {
         // assert 
         assertEquals(36.5, cleaned.temperature);
     }
+
+    @Test
+    void clean_keepNullTemperatureNull(){
+        PatientRecord raw = new PatientRecord(); 
+        raw.temperature = null; 
+        // act 
+        PatientRecord cleaned = cleaner.clean(raw); 
+
+        assertNull(cleaned.temperature);
+    }
+
+    @Test
+    void clean_keepInvalidDateTimeAfterTrim(){
+        PatientRecord raw = new PatientRecord(); 
+        raw.dateTimeTaken = "   Monday   "; 
+        // act 
+        PatientRecord cleaned = cleaner.clean(raw); 
+
+        assertEquals("Monday", cleaned.dateTimeTaken);
+    }
+    
+    @Test
+    void clean_returnNullForNullWeightsInput(){
+        PatientRecord raw = new PatientRecord(); 
+        raw.weights = null; 
+        // act 
+        PatientRecord cleaned = cleaner.clean(raw); 
+
+        assertNull(cleaned.weights);
+    }
+
 }
