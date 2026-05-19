@@ -1,5 +1,5 @@
 package org.example.util;
 
-public class sonFileService {
+public class JsonFileService {
     // TODO move the mapper here later 
 }

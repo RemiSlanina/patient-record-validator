@@ -10,18 +10,18 @@ public class RecordValidator {
     public List<ValidationIssue> validate(PatientRecord record) {
         List<ValidationIssue> issues = new ArrayList<>();
         // Validate all fields
-        addIssueIfPrsent(issues, validatePatientId(record.patientId, record.patientId)); 
-        addIssueIfPrsent(issues, validateSpo2(record.spo2, record.patientId)); 
-        addIssueIfPrsent(issues, validateTemperature(record.temperature, record.patientId));
-        addIssueIfPrsent(issues, validateHeartRate(record.heartRate, record.patientId));
-        addIssueIfPrsent(issues, validateWeights(record.weights, record.patientId));
-        addIssueIfPrsent(issues, validateDateTimeTaken(record.dateTimeTaken, record.patientId));
-        addIssueIfPrsent(issues, validateUserId(record.userId, record.patientId));
+        addIssueIfPresent(issues, validatePatientId(record.patientId, record.patientId)); 
+        addIssueIfPresent(issues, validateSpo2(record.spo2, record.patientId)); 
+        addIssueIfPresent(issues, validateTemperature(record.temperature, record.patientId));
+        addIssueIfPresent(issues, validateHeartRate(record.heartRate, record.patientId));
+        addIssueIfPresent(issues, validateWeights(record.weights, record.patientId));
+        addIssueIfPresent(issues, validateDateTimeTaken(record.dateTimeTaken, record.patientId));
+        addIssueIfPresent(issues, validateUserId(record.userId, record.patientId));
         return issues;
     }
 
     // Helper functions
-    private void addIssueIfPrsent(List<ValidationIssue> issues, ValidationIssue issue){
+    private void addIssueIfPresent(List<ValidationIssue> issues, ValidationIssue issue){
         if (issue != null) {
             issues.add(issue); 
         }
