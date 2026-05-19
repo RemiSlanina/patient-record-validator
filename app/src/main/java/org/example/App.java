@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;;
 
 public class App {
     public String getGreeting() {
-        return "Hello World!";
+        return "Welcome to the Record Validator App!";
     }
 
     public static void main(String[] args) throws Exception {

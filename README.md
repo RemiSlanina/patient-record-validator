@@ -17,6 +17,15 @@ Small Java CLI prototype for validating and cleaning patient vital record JSON d
 - Jackson
 - JUnit
 
+## Feats
+
+- Validate reports and log issues
+- Clean reports (invalid weights are dropped currently)
+- Print issues and cleaned reports (cli version only)
+
+Cleaner: normalization (trim, format, canonical shape)
+Validator: business/range rules (acceptable Spo2, heart rate range, etc.)
+
 ## Run
 
 ```bash
