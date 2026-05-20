@@ -12,7 +12,6 @@ public class RecordCleaner {
 
         if (source == null) return null; 
         PatientRecord cleaned = new PatientRecord(); 
-        // cleaned.patientId = source.patientId.trim(); 
         cleaned.patientId = trimToNull(source.patientId); 
         cleaned.userId = trimToNull((source.userId)); 
         cleaned.spo2 = source.spo2; 
@@ -21,8 +20,6 @@ public class RecordCleaner {
         cleaned.weights = normalizeWeights(source.weights); 
         cleaned.dateTimeTaken = normalizeDateTime(source.dateTimeTaken); 
 
-        // System.out.println("cleaned datetime: " + cleaned.dateTimeTaken);
-        // System.out.println("test temp " + Math.round(36.456 * 100.0) / 100.0);
         return cleaned; 
     }
 
@@ -53,7 +50,6 @@ public class RecordCleaner {
             if (weight > 0) {
                 cleanedWeights.add(weight); 
             }
-            // cleanedWeights.add(Math.abs(weight)); // no
         }
         return cleanedWeights; 
     }

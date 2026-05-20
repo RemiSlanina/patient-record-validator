@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import org.example.model.PatientRecord;
-// import java.nio.file.Path;
-// import java.nio.file.Files;
-// import java.nio.file.Files;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonFileService {

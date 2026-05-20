@@ -12,14 +12,6 @@ import org.example.util.JsonFileService;
 import org.example.validation.RecordValidator;
 import org.example.validation.ValidationIssue;
 
-// import java.io.File;
-// import java.io.InputStream;
-// import java.nio.file.Path;
-// import java.nio.file.Paths;
-// import com.fasterxml.jackson.core.type.TypeReference;
-// import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 public class App {
     public String getGreeting() {
         return "Welcome to the Record Validator App!";
@@ -33,7 +25,6 @@ public class App {
             resourcePath = args[0]; 
         }
         try {
-            // Path filePath = Paths.get(args[0]); 
             JsonFileService fileService = new JsonFileService(); 
             List<PatientRecord>  records = fileService.loadRecords(resourcePath); 
 

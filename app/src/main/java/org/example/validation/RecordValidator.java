@@ -112,8 +112,8 @@ public class RecordValidator {
             return new ValidationIssue(
                 patientId,
                 "weights",
-                "Missing weight values",
-                ValidationIssue.Severity.ERROR
+                "Empty weight values",
+                ValidationIssue.Severity.INFO
             );
         }
 
@@ -140,8 +140,8 @@ public class RecordValidator {
             return new ValidationIssue(
                 patientId,
                 "dateTimeTaken",
-                "Missing dateTimeTaken",
-                ValidationIssue.Severity.ERROR
+                "Empty dateTimeTaken",
+                ValidationIssue.Severity.WARNING
             );
         }
 

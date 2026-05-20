@@ -12,6 +12,9 @@ public class PatientRecord {
     public List<Double> weights; 
     public String userId; 
 
+    // double, int cannot be null 
+    // wrappers (Double, Integer) can 
+
     public PatientRecord() {}
 
     public PatientRecord(String patientId, int spo2, 
@@ -44,10 +47,7 @@ public class PatientRecord {
 
 /*
 
-double, int cannot be null 
-wrappers (Double, Integer) can 
-
-json 
+example json 
 
 [
   {
