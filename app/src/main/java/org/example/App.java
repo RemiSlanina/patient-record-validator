@@ -4,6 +4,7 @@
 package org.example;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.example.cleaning.RecordCleaner;
@@ -28,6 +29,7 @@ public class App {
         try {
             JsonFileService fileService = new JsonFileService(); 
             List<PatientRecord>  records = fileService.loadRecords(resourcePath); 
+            List<PatientRecord> cleanedRecords = new ArrayList<>(); 
 
             RecordValidator validator = new RecordValidator(); 
             RecordCleaner cleaner = new RecordCleaner(); 
@@ -43,11 +45,12 @@ public class App {
 
                 PatientRecord cleanedRecord = cleaner.clean(record); 
                 List<ValidationIssue> issues = validator.validate(record, cleanedRecord); 
+                cleanedRecords.add(cleanedRecord);
                 System.out.println("Initial: " + record.toString());
                 System.out.println("Cleaned: " + cleanedRecord.toString());
                 if (!issues.isEmpty()) {
                     totalIssues += issues.size(); 
-                    System.out.println("issues found: ");
+                    System.out.println("Issues found in " + cleanedRecord.patientId + ":");
                     for (ValidationIssue issue : issues) {
                         System.out.println(issue);
                     } 
@@ -56,15 +59,18 @@ public class App {
                     }
 
             }
-            System.out.println();
-            System.out.println("--------    --------    --------");
+            System.out.println("\n");
+            System.out.println("SUMMARY");
+            System.out.println("--------");
             System.out.println("Found a total of " + totalIssues + " issues in " + records.size() + " records.");
+
+            fileService.saveRecords(cleanedRecords, "cleaned-output.json");
+            System.out.println("Cleaned JSON exported to cleaned-output.json");
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
             System.err.println("Make sure the file exists in app/src/main/resources/" + resourcePath);
             System.exit(1); // close with error 
         }
-        // System.out.println("Done! Thanks for using the Patient Record Validator.");
         System.out.println("Validation complete. Exiting.");
     }
 }

@@ -1,39 +1,61 @@
 # Backlog
 
-## Current
+## Completed
 
 - [x] Create Gradle project
-- [x] Add Jackson
+- [x] Add Jackson JSON parsing
 - [x] Create PatientRecord model
-- [x] Parse sample JSON
+- [x] Load JSON from resources
+- [x] Add validation pipeline
+- [x] Add RecordCleaner normalization
+- [x] Add ValidationIssue model
+- [x] Add JUnit tests
+- [x] Export cleaned JSON
+- [x] Add CLI file argument support
+- [x] Create README
 
-## Next
+## Optional Improvements
 
-- [ ] Print records cleanly
-- [ ] Add SPO2 validation
-- [ ] Add missing timestamp warning
-- [ ] Create ValidationIssue model
-- [ ] Add first JUnit test
-
-## Later
-
-- [ ] Export cleaned JSON
 - [ ] CLI flags
+- [ ] Validation summary statistics
+- [ ] Additional tests
+- [ ] CSV export
 
-## JSON Notes
+## Sample Data
+
+Sample data is mostly used for manual testing in addition to JUnit.
 
 ### patients-1.json
 
-Contains mostly valid sample data.
+Mixed valid and invalid records that can still be parsed successfully (7 issues in 3 records).
+
+Used for:
+
+- cleaning
+- validation
+- JSON export
 
 ### patients-2.json
 
-Contains intentionally malformed records for validation testing.
+Malformed records mixed with valid ones for validation testing (11 issues in 7 records), including SpO₂ out of range and empty dateTimeTaken values.
+
+### patients-3.json
+
+Additional malformed but parseable records for validator testing (10 issues in 3 records).
 
 Examples:
 
-- P-1004 → invalid SPO2 (>100)
-- P-1005 → missing SPO2
-- P-1006 → malformed temperature
-- empty timestamps
-- null user IDs
+- future timestamps
+- invalid patient IDs
+- impossible vital signs
+
+### patients-2-invalid.json
+
+Contains intentionally incompatible JSON values that fail during Jackson deserialization.
+
+Examples:
+
+- non-numeric strings in numeric fields
+- invalid type mappings
+
+Used to test parser-level error handling.
