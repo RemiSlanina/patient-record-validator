@@ -7,6 +7,16 @@ import java.util.List;
 
 public class RecordValidator {
 
+    /**
+     * 
+     * Validates a raw PatientRecord using selected normalized values
+     * from the cleaned record for reporting purposes.
+     *
+     * Validation messages currently display the cleaned patient ID
+     * when available.
+     *
+     * At most one ValidationIssue per field is returned.
+     */
     public List<ValidationIssue> validate(PatientRecord raw, PatientRecord cleaned) {
         List<ValidationIssue> issues = new ArrayList<>();
         // Validate all fields
@@ -16,7 +26,7 @@ public class RecordValidator {
         addIssueIfPresent(issues, validateHeartRate(raw.heartRate, cleaned.patientId));
         addIssueIfPresent(issues, validateWeights(raw.weights, cleaned.patientId));
         addIssueIfPresent(issues, validateDateTimeTaken(raw.dateTimeTaken, cleaned.patientId));
-        addIssueIfPresent(issues, validateUserId(raw.userId, cleaned.patientId));
+        addIssueIfPresent(issues, validateUserId(raw.userId, raw.patientId, cleaned.patientId));
         return issues;
     }
 
@@ -176,13 +186,21 @@ public class RecordValidator {
         return null;
     }
 
-    private ValidationIssue validateUserId(String userId, String patientId) {
+    private ValidationIssue validateUserId(String userId, String rawPatientId, String cleanedPatientId) {
         if (userId == null || userId.isBlank()) {
             return new ValidationIssue(
-                patientId,
+                cleanedPatientId,
                 "userId",
                 "Missing userId/source identifier",
                 ValidationIssue.Severity.INFO
+            );
+        }
+        if (userId == rawPatientId) {
+            return new ValidationIssue(
+                cleanedPatientId,
+                "userId",
+                "userId matches patientId",
+                ValidationIssue.Severity.WARNING
             );
         }
         return null;

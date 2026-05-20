@@ -82,14 +82,38 @@ public class RecordValidatorTest {
         );
     }
 
-        // if (weights == null) {
-        //     return new ValidationIssue(
-        //         patientId,
-        //         "weights",
-        //         "Empty weight values",
-        //         ValidationIssue.Severity.INFO
-        //     );
-        // }
+    @Test
+    void detectPatientIdEqualsUserId() {
+        PatientRecord record = new PatientRecord(
+            "P-0001", 
+            96, 
+            36.5, 
+            70, 
+            "2026-05-14T03:55:00", 
+            List.of(55.5, 55.6, 56.0), 
+            "P-0001"
+        );
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned);
+        ValidationIssue issue = issues.getFirst(); 
+        assertEquals("userId", issue.field); 
+        assertEquals(ValidationIssue.Severity.WARNING, issue.severity);
+        assertEquals(
+            "userId matches patientId",
+            issue.message
+        );
+    }
+
+/*
+       if (userId == rawPatientId) {
+            return new ValidationIssue(
+                cleanedPatientId,
+                "userId",
+                "userId matches patientId",
+                ValidationIssue.Severity.WARNING
+            );
+        }
+ */
 
     @Test
     void shouldDetectInvalidSpo2() {
