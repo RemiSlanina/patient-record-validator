@@ -8,11 +8,89 @@ import org.example.model.PatientRecord;
 
 
 public class RecordValidatorTest {
+    private final RecordValidator validator = new RecordValidator(); 
+    private final RecordCleaner cleaner = new RecordCleaner(); 
     
     @Test 
     void testTest(){
         assertTrue(true);
     }
+
+    @Test
+    void detectInvalidPatientId() {
+        PatientRecord record = new PatientRecord(
+            "Alberta", 
+            96, 
+            36.8, 
+            70, 
+            "2026-05-14T03:55:00", 
+            List.of(55.0), 
+            "nurse-01"
+        );
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned);
+        ValidationIssue issue = issues.getFirst(); 
+        assertEquals("patientId", issue.field); 
+        assertEquals(ValidationIssue.Severity.WARNING, issue.severity);
+        assertEquals(
+            "Invalid patient ID format",
+            issue.message
+        );
+    }
+
+    @Test
+    void detectInvalidTemperature() {
+        PatientRecord record = new PatientRecord(
+            "P-100110100", 
+            96, 
+            23.5, 
+            70, 
+            "2026-05-14T03:55:00", 
+            List.of(55.0), 
+            "nurse-01"
+        );
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned);
+        ValidationIssue issue = issues.getFirst(); 
+        assertEquals("temperature", issue.field); 
+        assertEquals(ValidationIssue.Severity.WARNING, issue.severity);
+        assertEquals(
+            "Temperature out of range (35-42°C)",
+            issue.message
+        );
+    }
+
+    @Test
+    void detectWeightsEqualsNull() {
+        PatientRecord record = new PatientRecord(
+            "P-100110100", 
+            96, 
+            36.5, 
+            70, 
+            "2026-05-14T03:55:00", 
+            null, 
+            "nurse-01"
+        );
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned);
+        ValidationIssue issue = issues.getFirst(); 
+        assertEquals("weights", issue.field); 
+        assertEquals(ValidationIssue.Severity.INFO, issue.severity);
+        assertEquals(
+            "Empty weight values",
+            issue.message
+        );
+    }
+
+        // if (weights == null) {
+        //     return new ValidationIssue(
+        //         patientId,
+        //         "weights",
+        //         "Empty weight values",
+        //         ValidationIssue.Severity.INFO
+        //     );
+        // }
+
     @Test
     void shouldDetectInvalidSpo2() {
         // arrange 
@@ -26,8 +104,6 @@ public class RecordValidatorTest {
             "Alberta"
         );
 
-        RecordValidator validator = new RecordValidator(); 
-        RecordCleaner cleaner = new RecordCleaner(); 
         PatientRecord cleaned = cleaner.clean(record); 
         // act 
         List<ValidationIssue> issues = validator.validate(record, cleaned); 
@@ -49,8 +125,6 @@ public class RecordValidatorTest {
             "Alberta"
         );
 
-        RecordValidator validator = new RecordValidator(); 
-        RecordCleaner cleaner = new RecordCleaner(); 
         PatientRecord cleaned = cleaner.clean(record); 
         // act 
         List<ValidationIssue> issues = validator.validate(record, cleaned); 
