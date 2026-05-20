@@ -7,16 +7,16 @@ import java.util.List;
 
 public class RecordValidator {
 
-    public List<ValidationIssue> validate(PatientRecord record) {
+    public List<ValidationIssue> validate(PatientRecord raw, PatientRecord cleaned) {
         List<ValidationIssue> issues = new ArrayList<>();
         // Validate all fields
-        addIssueIfPresent(issues, validatePatientId(record.patientId, record.patientId)); 
-        addIssueIfPresent(issues, validateSpo2(record.spo2, record.patientId)); 
-        addIssueIfPresent(issues, validateTemperature(record.temperature, record.patientId));
-        addIssueIfPresent(issues, validateHeartRate(record.heartRate, record.patientId));
-        addIssueIfPresent(issues, validateWeights(record.weights, record.patientId));
-        addIssueIfPresent(issues, validateDateTimeTaken(record.dateTimeTaken, record.patientId));
-        addIssueIfPresent(issues, validateUserId(record.userId, record.patientId));
+        addIssueIfPresent(issues, validatePatientId(raw.patientId, cleaned.patientId)); 
+        addIssueIfPresent(issues, validateSpo2(raw.spo2, cleaned.patientId)); 
+        addIssueIfPresent(issues, validateTemperature(raw.temperature, cleaned.patientId));
+        addIssueIfPresent(issues, validateHeartRate(raw.heartRate, cleaned.patientId));
+        addIssueIfPresent(issues, validateWeights(raw.weights, cleaned.patientId));
+        addIssueIfPresent(issues, validateDateTimeTaken(raw.dateTimeTaken, cleaned.patientId));
+        addIssueIfPresent(issues, validateUserId(raw.userId, cleaned.patientId));
         return issues;
     }
 
@@ -27,10 +27,10 @@ public class RecordValidator {
         }
     }
 
-    private ValidationIssue validatePatientId(String patientId, String recordPatientId) {
+    private ValidationIssue validatePatientId(String patientId, String cleanedPatientId) {
         if (patientId == null || patientId.isBlank()) {
             return new ValidationIssue(
-                recordPatientId,
+                "missing ID",
                 "patientId",
                 "Missing patient ID",
                 ValidationIssue.Severity.ERROR
@@ -38,7 +38,7 @@ public class RecordValidator {
         }
         if (!patientId.matches("^P-\\d+$")) {
             return new ValidationIssue(
-                recordPatientId,
+                cleanedPatientId,
                 "patientId",
                 "Invalid patient ID format",
                 ValidationIssue.Severity.WARNING

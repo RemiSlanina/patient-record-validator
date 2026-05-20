@@ -3,6 +3,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.example.cleaning.RecordCleaner;
 import org.example.model.PatientRecord;
 
 
@@ -26,8 +27,10 @@ public class RecordValidatorTest {
         );
 
         RecordValidator validator = new RecordValidator(); 
+        RecordCleaner cleaner = new RecordCleaner(); 
+        PatientRecord cleaned = cleaner.clean(record); 
         // act 
-        List<ValidationIssue> issues = validator.validate(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned); 
 
         // assert 
         assertFalse(issues.isEmpty()); 
@@ -47,8 +50,10 @@ public class RecordValidatorTest {
         );
 
         RecordValidator validator = new RecordValidator(); 
+        RecordCleaner cleaner = new RecordCleaner(); 
+        PatientRecord cleaned = cleaner.clean(record); 
         // act 
-        List<ValidationIssue> issues = validator.validate(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned); 
 
         // assert expect one issue for spo2
         assertEquals(1, issues.size());

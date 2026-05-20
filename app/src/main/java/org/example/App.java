@@ -37,7 +37,7 @@ public class App {
             JsonFileService fileService = new JsonFileService(); 
             List<PatientRecord>  records = fileService.loadRecords(resourcePath); 
 
-            RecordValidator validaotr = new RecordValidator(); 
+            RecordValidator validator = new RecordValidator(); 
             RecordCleaner cleaner = new RecordCleaner(); 
 
             // validate, clean, print results. 
@@ -45,8 +45,8 @@ public class App {
             System.out.println();
             
             records.forEach(record -> {
-                List<ValidationIssue> issues = validaotr.validate(record); 
                 PatientRecord cleanedRecord = cleaner.clean(record); 
+                List<ValidationIssue> issues = validator.validate(record, cleanedRecord); 
                 System.out.println("Initial: " + record.toString());
                 System.out.println("Cleaned: " + cleanedRecord.toString());
                 if (!issues.isEmpty()) {
@@ -64,6 +64,7 @@ public class App {
             System.err.println("Make sure the file exists in app/src/main/resources/" + resourcePath);
             System.exit(1); // close with error 
         }
-
+        // System.out.println("Done! Thanks for using the Patient Record Validator.");
+        System.out.println("Validation complete. Exiting.");
     }
 }
