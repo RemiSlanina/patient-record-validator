@@ -104,19 +104,8 @@ public class RecordValidatorTest {
         );
     }
 
-/*
-       if (userId == rawPatientId) {
-            return new ValidationIssue(
-                cleanedPatientId,
-                "userId",
-                "userId matches patientId",
-                ValidationIssue.Severity.WARNING
-            );
-        }
- */
-
     @Test
-    void shouldDetectInvalidSpo2() {
+    void detectInvalidSpo2() { 
         // arrange 
         PatientRecord record = new PatientRecord(
             "P-1001", 
@@ -133,15 +122,19 @@ public class RecordValidatorTest {
         List<ValidationIssue> issues = validator.validate(record, cleaned); 
 
         // assert 
-        assertFalse(issues.isEmpty()); 
+        ValidationIssue issue = issues.getFirst(); 
+        assertEquals(ValidationIssue.Severity.WARNING, issue.severity);
+        assertEquals("spo2", issue.field);
+        assertEquals("SpO₂ out of range (95-100%)", issue.message);
     }
 
+
     @Test
-    void shouldDetectOneIssueForSpo2() {
+    void detectEmptySpo2() {
         // arrange 
         PatientRecord record = new PatientRecord(
             "P-1001", 
-            3, 
+            null, 
             36.8, 
             70, 
             "2026-05-14T03:55:00", 
@@ -150,10 +143,11 @@ public class RecordValidatorTest {
         );
 
         PatientRecord cleaned = cleaner.clean(record); 
-        // act 
         List<ValidationIssue> issues = validator.validate(record, cleaned); 
 
-        // assert expect one issue for spo2
-        assertEquals(1, issues.size());
+        ValidationIssue issue = issues.getFirst(); 
+        assertEquals(ValidationIssue.Severity.ERROR, issue.severity);
+        assertEquals("spo2", issue.field);
+        assertEquals( "Missing SpO₂ value", issue.message);
     }
 }

@@ -12,13 +12,16 @@ public class PatientRecord {
     public List<Double> weights; 
     public String userId; 
 
-    // double, int cannot be null 
-    // wrappers (Double, Integer) can 
 
+    /**
+     * Wrapper types are used to allow partially missing
+     * records during parsing and validation.
+     */
+ 
     public PatientRecord() {}
 
-    public PatientRecord(String patientId, int spo2, 
-              double temperature, int heartRate, String dateTimeTaken, 
+    public PatientRecord(String patientId, Integer spo2, 
+              Double temperature, Integer heartRate, String dateTimeTaken, 
               List<Double> weights, String userId){
                 this.patientId = patientId; 
                 this.spo2 = spo2; 
