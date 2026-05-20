@@ -40,6 +40,14 @@ Rounding values is technically interpretive, but not a clear semantic rewrite.
 ./gradlew run
 ```
 
+or run with args
+
+```bash
+./gradlew build
+./gradlew run --args="sample-data/patients-2.json"
+./gradlew run --args="sample-data/patients-3.json"
+```
+
 ## Tests
 
 ```bash

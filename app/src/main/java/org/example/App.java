@@ -3,16 +3,21 @@
  */
 package org.example;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.example.cleaning.RecordCleaner;
 import org.example.model.PatientRecord;
+import org.example.util.JsonFileService;
 import org.example.validation.RecordValidator;
 import org.example.validation.ValidationIssue;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;; 
+// import java.io.File;
+// import java.io.InputStream;
+// import java.nio.file.Path;
+// import java.nio.file.Paths;
+// import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class App {
@@ -22,35 +27,43 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         System.out.println(new App().getGreeting());
+        String resourcePath = "sample-data/patients-1.json"; 
 
-        ObjectMapper mapper = new ObjectMapper(); 
-
-        List<PatientRecord> records = mapper.readValue(new File("sample-data/patients-1.json"), new TypeReference<List<PatientRecord>>() {}); 
-
-        RecordCleaner cleaner = new RecordCleaner(); 
-        RecordValidator validator = new RecordValidator(); 
-
-        //test the cleaner 
-        // System.out.println("Cursed patientId " + records.get(2).patientId);
-        // System.out.println("Cleaned patientId " + cleaner.clean(records.get(2)).patientId);
-
-        System.out.println("Records loaded " + records.size());
-
-        for (PatientRecord record : records) {
-            System.out.println();
-            System.out.println(record);
-            System.out.println("Record for " +  record.patientId);
-            List<ValidationIssue> issues = validator.validate(record); 
-            if (!issues.isEmpty()) {
-                System.out.println("issues found: ");
-                for (ValidationIssue issue : issues) {
-                    System.out.println(issue);
-                }
-            }
-            PatientRecord cleanedRecord = cleaner.clean(record); 
-            System.out.println("Initial: " + record.toString());
-            System.out.println("Cleaned: " + cleanedRecord.toString());
-            System.out.println();
+        if (args.length > 0) {
+            resourcePath = args[0]; 
         }
+        try {
+            // Path filePath = Paths.get(args[0]); 
+            JsonFileService fileService = new JsonFileService(); 
+            List<PatientRecord>  records = fileService.loadRecords(resourcePath); 
+
+            RecordValidator validaotr = new RecordValidator(); 
+            RecordCleaner cleaner = new RecordCleaner(); 
+
+            // validate, clean, print results. 
+            System.out.println("Records loaded " + records.size());
+            System.out.println();
+            
+            records.forEach(record -> {
+                List<ValidationIssue> issues = validaotr.validate(record); 
+                PatientRecord cleanedRecord = cleaner.clean(record); 
+                System.out.println("Initial: " + record.toString());
+                System.out.println("Cleaned: " + cleanedRecord.toString());
+                if (!issues.isEmpty()) {
+                    System.out.println("issues found: ");
+                    for (ValidationIssue issue : issues) {
+                        System.out.println(issue);
+                    }
+                }
+                System.out.println();
+                System.out.println("--------");
+                System.out.println();
+            });
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            System.err.println("Make sure the file exists in app/src/main/resources/" + resourcePath);
+            System.exit(1); // close with error 
+        }
+
     }
 }
