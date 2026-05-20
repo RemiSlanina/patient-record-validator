@@ -18,6 +18,7 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
+        int totalIssues = 0; 
         System.out.println(new App().getGreeting());
         String resourcePath = "sample-data/patients-1.json"; 
 
@@ -33,23 +34,31 @@ public class App {
 
             // validate, clean, print results. 
             System.out.println("Records loaded " + records.size());
-            System.out.println();
+
             
-            records.forEach(record -> {
+            for (PatientRecord record : records) {
+                System.out.println();
+                System.out.println("--------");
+                System.out.println();
+
                 PatientRecord cleanedRecord = cleaner.clean(record); 
                 List<ValidationIssue> issues = validator.validate(record, cleanedRecord); 
                 System.out.println("Initial: " + record.toString());
                 System.out.println("Cleaned: " + cleanedRecord.toString());
                 if (!issues.isEmpty()) {
+                    totalIssues += issues.size(); 
                     System.out.println("issues found: ");
                     for (ValidationIssue issue : issues) {
                         System.out.println(issue);
+                    } 
+                } else {
+                        System.out.println("No issues found in " + record.patientId);
                     }
-                }
-                System.out.println();
-                System.out.println("--------");
-                System.out.println();
-            });
+
+            }
+            System.out.println();
+            System.out.println("--------    --------    --------");
+            System.out.println("Found a total of " + totalIssues + " issues in " + records.size() + " records.");
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
             System.err.println("Make sure the file exists in app/src/main/resources/" + resourcePath);

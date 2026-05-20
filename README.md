@@ -24,15 +24,15 @@ Small Java CLI prototype for validating and cleaning patient vital record JSON d
 - Remove invalid weights during cleaning
 - Print validation issues and cleaned records in the CLI
 
-_Validator_:
-business/range rules
-(example: SpO₂ range, missing heart rate, invalid timestamps)
+**Validator**
 
-_Cleaner_:
-normalization and safe transformations
-(example: trimming strings, rounding values, removing invalid weights)
-Rounding values is technically interpretive, but not a clear semantic rewrite.
-36.8888 -> 36.9 is performed as abounded precision normalization.
+- business/range rules
+- example: invalid SpO₂ values, missing heart rate, invalid timestamps
+
+**Cleaner**
+
+- normalization and safe transformations
+- example: trimming strings, rounding temperatures, removing invalid weights
 
 ## Run
 
@@ -40,12 +40,17 @@ Rounding values is technically interpretive, but not a clear semantic rewrite.
 ./gradlew run
 ```
 
-or run with args
+Run with a specific input file:
 
 ```bash
-./gradlew build
-./gradlew run --args="sample-data/patients-2.json"
-./gradlew run --args="sample-data/patients-3.json"
+./gradlew run --args="patients-2.json"
+./gradlew run --args="patients-3.json"
+```
+
+JSON files are currently loaded from:
+
+```
+app/src/main/resources/
 ```
 
 ## Tests
