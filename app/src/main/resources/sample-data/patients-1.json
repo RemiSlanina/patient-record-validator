@@ -18,7 +18,7 @@
     "userId": "nurse"
   },
   {
-    "patientId": null,
+    "patientId": "   P-1003A    ",
     "spo2": 3,
     "temperature": "21.332",
     "heartRate": null,

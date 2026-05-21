@@ -79,7 +79,12 @@ public class App {
                 System.out.println("Cleaned: " + cleanedRecord.toString());
                 if (!issues.isEmpty()) {
                     totalIssues += issues.size(); 
-                    System.out.println("Issues found in " + cleanedRecord.patientId + ":");
+                    if (cleanedRecord.patientId == null) {
+                        System.out.println("Issues found in current record:");
+                    } else {
+                        System.out.println("Issues found in " + cleanedRecord.patientId + ":");
+                    }
+                    
                     for (ValidationIssue issue : issues) {
                         // System.out.println(issue);
                         if (issue.patientId == null) {
@@ -99,7 +104,11 @@ public class App {
 
                     } 
                 } else {
-                        System.out.println("** No issues found in " + record.patientId + ". **");
+                        if (cleanedRecord.patientId == null) {
+                            System.out.println("** No issues found in current record. **");
+                        } else {
+                            System.out.println("** No issues found in " + record.patientId + ". **");
+                        }
                     }
 
             }
