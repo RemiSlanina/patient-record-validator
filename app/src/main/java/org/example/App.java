@@ -31,18 +31,30 @@ public class App {
         try {
             JsonFileService fileService = new JsonFileService(); 
             // TO DO Replace with resourcePath after testing: 
-            String json = fileService.readResourceAsString("sample-data/patients-2-invalid.json"); 
+            String json = fileService.readResourceAsString(resourcePath); 
             List<ValidationIssue> preValidatonIssues = JsonPreValidator.validateJsonTypes(json); 
             if (!preValidatonIssues.isEmpty()){
                 System.out.println();
-                System.err.println("Pre-validation errors found:");
+                System.err.println("--------");
+                System.err.println("### Pre-validation errors found:");
+                System.err.println("The following issues prevent parsing:");
                 for (ValidationIssue issue : preValidatonIssues) {
-                    System.err.println(issue);
+                    //System.err.println(issue);
+                    System.err.printf("- %s: %s (%s)\n", 
+                        issue.field, 
+                        issue.message, 
+                        issue.severity
+                    );
                     totalIssues++; 
                 }
                 System.err.println();
                 System.err.println("--------");
                 System.err.println();
+                System.out.println("### SUMMARY");
+                System.err.println("**" + totalIssues + " critical errors found.**");
+                System.err.println("Invalid data cannot be processed. Please correct the input file and try again.");
+                System.err.println("Exiting..");
+                System.exit(1);
             }
 
             List<PatientRecord>  records = fileService.loadRecords(resourcePath); 
@@ -69,24 +81,39 @@ public class App {
                     totalIssues += issues.size(); 
                     System.out.println("Issues found in " + cleanedRecord.patientId + ":");
                     for (ValidationIssue issue : issues) {
-                        System.out.println(issue);
+                        // System.out.println(issue);
+                        if (issue.patientId == null) {
+                            System.out.printf("- %s: %s (%s)\n", 
+                                issue.field, 
+                                issue.message, 
+                                issue.severity
+                            );
+                        } else {
+                            System.out.printf("- %s: %s, %s (%s)\n", 
+                                issue.patientId, 
+                                issue.field, 
+                                issue.message, 
+                                issue.severity
+                            );
+                        }                
+
                     } 
                 } else {
-                        System.out.println("No issues found in " + record.patientId);
+                        System.out.println("** No issues found in " + record.patientId + ". **");
                     }
 
             }
             System.out.println("\n");
-            System.out.println("SUMMARY");
+            System.out.println("### SUMMARY");
             System.out.println("--------");
-            System.out.println("Found a total of " + totalIssues + " issues in " + records.size() + " records.");
+            System.out.println("** Found a total of " + totalIssues + " issues in " + records.size() + " records. **");
 
             fileService.saveRecords(cleanedRecords, "cleaned-output.json");
             System.out.println("Cleaned JSON exported to cleaned-output.json");
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
+            System.err.println("### Error reading file: " + e.getMessage());
             System.err.println("Make sure the file exists in app/src/main/resources/" + resourcePath);
-            System.exit(1); // close with error 
+            System.exit(1); 
         }
         System.out.println("Validation complete. Exiting.");
     }

@@ -34,17 +34,16 @@ public class PatientRecord {
 
     @Override
     public String toString() {
-        return "PatientRecord{" +
-             "patientId='" + patientId + '\'' +
-             ", spo2=" + spo2 +
-             ", temperature=" + temperature +
-             ", heartRate=" + heartRate +
-             ", dateTimeTaken='" + dateTimeTaken + '\'' +
-             ", weights=" + weights +
-             ", userId='" + userId + '\'' +
-             '}';
+        return "\n  PatientRecord{\n" +
+             "    patientId = '" + patientId + '\'' +
+             ",\n    spo2 = " + spo2 +
+             ",\n    temperature = " + temperature +
+             ",\n    heartRate = " + heartRate +
+             ",\n    dateTimeTaken = '" + dateTimeTaken + '\'' +
+             ",\n    weights = " + weights +
+             ",\n    userId = '" + userId + '\'' +
+             "\n  }\n";
     }
-    
 }
 
 

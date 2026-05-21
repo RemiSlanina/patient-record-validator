@@ -15,7 +15,7 @@
   "weights" : [ 55.3, 55.6, 53.0 ],
   "userId" : "nurse"
 }, {
-  "patientId" : "P-1003A",
+  "patientId" : null,
   "spo2" : 3,
   "temperature" : 21.3,
   "heartRate" : null,
