@@ -10,6 +10,7 @@ import java.util.List;
 import org.example.cleaning.RecordCleaner;
 import org.example.model.PatientRecord;
 import org.example.util.JsonFileService;
+import org.example.validation.JsonPreValidator;
 import org.example.validation.RecordValidator;
 import org.example.validation.ValidationIssue;
 
@@ -20,6 +21,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         int totalIssues = 0; 
+        System.out.println();
         System.out.println(new App().getGreeting());
         String resourcePath = "sample-data/patients-1.json"; 
 
@@ -28,6 +30,21 @@ public class App {
         }
         try {
             JsonFileService fileService = new JsonFileService(); 
+            // TO DO Replace with resourcePath after testing: 
+            String json = fileService.readResourceAsString("sample-data/patients-2-invalid.json"); 
+            List<ValidationIssue> preValidatonIssues = JsonPreValidator.validateJsonTypes(json); 
+            if (!preValidatonIssues.isEmpty()){
+                System.out.println();
+                System.err.println("Pre-validation errors found:");
+                for (ValidationIssue issue : preValidatonIssues) {
+                    System.err.println(issue);
+                    totalIssues++; 
+                }
+                System.err.println();
+                System.err.println("--------");
+                System.err.println();
+            }
+
             List<PatientRecord>  records = fileService.loadRecords(resourcePath); 
             List<PatientRecord> cleanedRecords = new ArrayList<>(); 
 
@@ -35,7 +52,7 @@ public class App {
             RecordCleaner cleaner = new RecordCleaner(); 
 
             // validate, clean, print results. 
-            System.out.println("Records loaded " + records.size());
+            System.out.println("Records loaded: " + records.size());
 
             
             for (PatientRecord record : records) {

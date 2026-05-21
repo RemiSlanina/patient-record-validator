@@ -18,9 +18,9 @@
     "userId": null
   },
   {
-    "patientId": "P-1003",
-    "spo2": 88,
-    "temperature": "38.7",
+    "patientId": "gan",
+    "spo2": "fifty",
+    "temperature": "too high",
     "heartRate": 110,
     "dateTimeTaken": "2026-05-13T22:11:00",
     "weights": [81.2],

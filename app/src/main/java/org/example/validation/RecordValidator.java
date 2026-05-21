@@ -40,7 +40,6 @@ public class RecordValidator {
     private ValidationIssue validatePatientId(String patientId, String cleanedPatientId) {
         if (patientId == null || patientId.isBlank()) {
             return new ValidationIssue(
-                "missing ID",
                 "patientId",
                 "Missing patient ID",
                 ValidationIssue.Severity.ERROR
