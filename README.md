@@ -43,8 +43,8 @@ Small Java CLI prototype for validating and cleaning patient vital record JSON d
 Run with a specific input file:
 
 ```bash
-./gradlew run --args="patients-2.json"
-./gradlew run --args="patients-3.json"
+./gradlew run --args="sample-data/patients-2.json"
+./gradlew run --args="sample-data/patients-3.json"
 ```
 
 JSON files are currently loaded from:
