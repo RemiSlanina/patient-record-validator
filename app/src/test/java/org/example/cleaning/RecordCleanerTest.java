@@ -1,11 +1,10 @@
-package org.example;
+package org.example.cleaning;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
-import org.example.cleaning.RecordCleaner;
 import org.example.model.PatientRecord;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +49,7 @@ public class RecordCleanerTest {
     }
 
     @Test
-    void clean_shouldDropInvalidWeights(){
+    void clean_dropInvalidWeights(){
         // arrange 
         PatientRecord raw = new PatientRecord(
             "P-1001", 
