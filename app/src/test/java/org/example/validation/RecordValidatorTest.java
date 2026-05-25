@@ -87,13 +87,14 @@ public class RecordValidatorTest {
     @Test
     void detectPatientIdEqualsUserId() {
         PatientRecord record = new PatientRecord(
-            "P-0001", 
-            96, 
-            36.5, 
-            70, 
-            "2026-05-14T03:55:00", 
-            List.of(55.5, 55.6, 56.0), 
-            "P-0001"
+            // create new reference, because java sometimes reuses them internally 
+            new String("P-0001"),
+            96,
+            36.5,
+            70,
+            "2026-05-14T03:55:00",
+            List.of(55.5, 55.6, 56.0),
+            new String("P-0001") 
         );
         PatientRecord cleaned = cleaner.clean(record); 
         List<ValidationIssue> issues = validator.validate(record, cleaned);

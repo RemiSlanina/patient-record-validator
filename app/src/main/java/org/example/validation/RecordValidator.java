@@ -1,9 +1,10 @@
 package org.example.validation;
 
-import org.example.model.PatientRecord;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.example.model.PatientRecord;
 
 public class RecordValidator {
 
@@ -194,7 +195,7 @@ public class RecordValidator {
                 ValidationIssue.Severity.INFO
             );
         }
-        if (userId == rawPatientId) {
+        if (userId.equals(rawPatientId)) {
             return new ValidationIssue(
                 cleanedPatientId,
                 "userId",
