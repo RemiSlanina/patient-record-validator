@@ -20,9 +20,18 @@ Small Java CLI prototype for validating and cleaning patient vital record JSON d
 ## Current Functionality
 
 - Validate patient records and log issues
-- Normalize selected malformed fields
+- Normalize recoverable input values
 - Remove invalid weights during cleaning
 - Print validation issues and cleaned records in the CLI
+
+**Prevalidator**
+
+- detects malformed JSON and incompatible input before deserialization
+- example use cases:
+  - non-numeric strings in numeric fields
+  - invalid type mappings
+  - malformed JSON syntax
+- prevents runtime parsing failures and exits safely with structured errors
 
 **Validator**
 
@@ -45,6 +54,7 @@ Run with a specific input file:
 ```bash
 ./gradlew run --args="sample-data/patients-2.json"
 ./gradlew run --args="sample-data/patients-3.json"
+./gradlew run --args="sample-data/patients-invalid.json"
 ```
 
 JSON files are currently loaded from:

@@ -2,6 +2,9 @@
 
 ## Completed
 
+- [x] Additional tests
+- [x] Fix smaller validation bugs
+- [x] Fix RecordCleanerTest path
 - [x] Create Gradle project
 - [x] Add Jackson JSON parsing
 - [x] Create PatientRecord model
@@ -18,7 +21,6 @@
 
 - [ ] CLI flags
 - [ ] Validation summary statistics
-- [ ] Additional tests
 - [ ] CSV export
 
 ## Sample Data
@@ -51,7 +53,7 @@ Examples:
 
 ### patients-2-invalid.json
 
-Contains intentionally incompatible JSON values that fail during Jackson deserialization.
+Contains intentionally incompatible JSON values that trigger parser-level validation failures during Jackson deserialization.
 
 Examples:
 
