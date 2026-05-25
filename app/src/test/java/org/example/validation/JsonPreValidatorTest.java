@@ -1,6 +1,7 @@
 package org.example.validation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -30,5 +31,25 @@ public class JsonPreValidatorTest {
         List<ValidationIssue> issues = JsonPreValidator.validateJsonTypes(json); 
         assertEquals(1, issues.size(), "Only errors for invalid fields.");
         assertEquals("temperature", issues.getFirst().field);
+    }
+
+    @Test 
+    void reportInvalidJsonMissingQuotes(){
+        String json = "[{invalid json}]"; 
+        List<ValidationIssue> issues = JsonPreValidator.validateJsonTypes(json); 
+        assertEquals(1, issues.size(), "1 issue exactly for detecting json is invalid");
+        assertEquals("JSON", issues.getFirst().field);
+        assertEquals(ValidationIssue.Severity.ERROR, issues.getFirst().severity);
+        assertTrue(issues.getFirst().message.contains("Failed to parse JSON "));
+    }
+
+    @Test 
+    void reportInvalidJsonMissingBrackets(){
+        String json = "[{\"invalid\":\"json\""; 
+        List<ValidationIssue> issues = JsonPreValidator.validateJsonTypes(json); 
+        assertEquals(1, issues.size(), "1 issue exactly for detecting json is invalid");
+        assertEquals("JSON", issues.getFirst().field);
+        assertEquals(ValidationIssue.Severity.ERROR, issues.getFirst().severity);
+        assertTrue(issues.getFirst().message.contains("Failed to parse JSON "));
     }
 }
