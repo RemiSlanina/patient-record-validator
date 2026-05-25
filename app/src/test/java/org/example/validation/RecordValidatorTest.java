@@ -1,10 +1,12 @@
 package org.example.validation;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.example.cleaning.RecordCleaner;
 import org.example.model.PatientRecord;
+import org.junit.jupiter.api.Test;
 
 
 public class RecordValidatorTest {
@@ -128,7 +130,6 @@ public class RecordValidatorTest {
         assertEquals("SpO₂ out of range (95-100%)", issue.message);
     }
 
-
     @Test
     void detectEmptySpo2() {
         // arrange 
@@ -149,5 +150,72 @@ public class RecordValidatorTest {
         assertEquals(ValidationIssue.Severity.ERROR, issue.severity);
         assertEquals("spo2", issue.field);
         assertEquals( "Missing SpO₂ value", issue.message);
+    }
+
+    @Test 
+    void detectPreshistoricDate() {
+        // arrange 
+        PatientRecord record = new PatientRecord(
+            "P-10453451", 
+            97, 
+            36.5, 
+            70, 
+            "1741-05-14T03:55", 
+            List.of(55.0, 60.0), 
+            "Alberta"
+        ); 
+        // act 
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned); 
+        // System.out.println(issues.getFirst().message);
+        // assert
+        assertEquals(record.patientId, issues.getFirst().patientId);
+        assertEquals("dateTimeTaken", issues.getFirst().field);
+        assertEquals("Very old dateTimeTaken: " + record.dateTimeTaken, issues.getFirst().message);
+    }
+
+    @Test 
+    void detectFutureDate() {
+        // arrange 
+        PatientRecord record = new PatientRecord(
+            "P-10453451", 
+            97, 
+            36.5, 
+            70, 
+            "2741-05-14T03:55", 
+            List.of(55.0, 60.0), 
+            "Alberta"
+        ); 
+        // act 
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned); 
+        // System.out.println(issues.getFirst().message);
+        // assert
+        assertEquals(record.patientId, issues.getFirst().patientId);
+        assertEquals("dateTimeTaken", issues.getFirst().field);
+        assertEquals("Date cannot be in the future: " + record.dateTimeTaken, issues.getFirst().message);
+    }
+
+    @Test
+    void detectInvalidDate() {
+        // arrange 
+        PatientRecord record = new PatientRecord(
+            "P-10453451", 
+            97, 
+            36.5, 
+            70, 
+            "2741-05-14T55:03", 
+            List.of(55.0, 60.0), 
+            "Alberta"
+        );  
+        // act 
+        PatientRecord cleaned = cleaner.clean(record); 
+        List<ValidationIssue> issues = validator.validate(record, cleaned); 
+        // System.out.println(issues.getFirst().message);
+        // assert
+        assertEquals(record.patientId, issues.getFirst().patientId);
+        assertEquals("dateTimeTaken", issues.getFirst().field);
+        assertEquals("Invalid dateTimeTaken format. Expected yyyy-MM-ddTHH:mm:ss", issues.getFirst().message);
+        assertEquals(ValidationIssue.Severity.ERROR, issues.getFirst().severity);
     }
 }

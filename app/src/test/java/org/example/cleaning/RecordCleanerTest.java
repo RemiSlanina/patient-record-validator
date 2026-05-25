@@ -3,6 +3,7 @@ package org.example.cleaning;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.example.model.PatientRecord;
@@ -104,6 +105,29 @@ public class RecordCleanerTest {
         PatientRecord cleaned = cleaner.clean(raw); 
 
         assertNull(cleaned.weights);
+    } 
+
+    
+    @Test
+    void clean_dropNullWeights(){
+        // arrange 
+        List<Double> weights = new ArrayList<>(); 
+        weights.add(82.0);
+        weights.add(null); 
+        weights.add(83.9); 
+        PatientRecord raw = new PatientRecord(
+            "P-1001", 
+            3, 
+            36.8, 
+            70, 
+            "2026-05-14T03:55:00", 
+            weights, 
+            "friday"
+        );
+        // act 
+        PatientRecord cleaned = cleaner.clean(raw); 
+        // assert
+        assertEquals(List.of(82.0, 83.9), cleaned.weights);
     }
 
 }
